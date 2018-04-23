@@ -16,7 +16,6 @@ export class AppComponent implements OnInit {
     "Marah",
     ""
   ];
-  title = 'app';
   people: string [] = this.testPeople;
   matchUp: match;
 
@@ -47,12 +46,12 @@ export class AppComponent implements OnInit {
     if( $event.target.value.length !== 0) {
       this.people[i] = $event.target.value;
     }
-    console.dir(this.people);
-    this.generateSchedule(this.people.filter((person) => person.length !== 0 ));
+    this.generateSchedule(this.people);
   }
 
   generateSchedule(people) {
     console.log("attempt to schedule");
+    people = this.people.filter(person => person.length > 0 );
     if( this.people.length < 2) {
       return;
     }

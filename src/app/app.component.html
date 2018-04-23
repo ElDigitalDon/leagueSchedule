@@ -1,7 +1,7 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
   <h1>
-    Welcome to {{ title }}!
+    League Scheduler
   </h1>
 </div>
 <table>
@@ -13,13 +13,17 @@
   </tbody>
 </table>
 <button (click)="add()">Add Person</button>
+<br />
+<br />
+<hr>
+<br />
 <table>
   <thead><tr>
-    <td>Player1</td><td>Player2</td></tr>
+    <td>Game #</td><td>Player1</td><td>Player2</td></tr>
   </thead>
   <tbody>
     <tr *ngFor="let game of matchUp.games; let i = index;">
-      <td>{{game.players.player1}}</td><td>{{game.players.player2}}</td>
+      <td>{{i + 1}}</td><td>{{game.players.player1}}</td><td>{{game.players.player2}}</td>
     </tr>
   </tbody>
 </table>
