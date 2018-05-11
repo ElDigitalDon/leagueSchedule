@@ -50,10 +50,13 @@ export class AppComponent implements OnInit {
     this.generateSchedule(this.people);
     this.teamForm.valueChanges.subscribe(value => {
       let count = this.teamForm.value.people.length;
-      console.log( this.teamForm.value.people[count-1].person);
       if (this.teamForm.value.people[count-1].person !== "") {
         this.onAddNames();
       }
+      this.people = [];
+      this.teamForm.value.people.forEach(person => {
+        this.people.push(person.person);
+      });
       this.generateSchedule(this.people);
     });
   }
@@ -68,8 +71,8 @@ export class AppComponent implements OnInit {
 
   generateSchedule(people) {
     console.log("attempt to schedule");
-    people = this.people.filter(person => person.length > 0 );
-    if( this.people.length < 2) {
+    people = people.filter(person => person.length > 0 );
+    if( people.length < 2) {
       return;
     }
 
