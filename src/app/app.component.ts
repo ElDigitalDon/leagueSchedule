@@ -34,6 +34,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.matchUp = {games : []};
+    // Pre-configure all the league entries
     for (let i = 0; i < 5; i++ ) {
       let players : players = {
         player1 : "", player2 : ""
@@ -41,11 +42,18 @@ export class AppComponent implements OnInit {
       let game : game = { players };
       this.matchUp.games.push(game);
     }
+    // Pre-populate controls from testPeople array
     this.testPeople.forEach(person => {
       this.onAddNames(person);
     });
+    // Subscribe to any changes to the group of controls
     this.generateSchedule(this.people);
     this.teamForm.valueChanges.subscribe(value => {
+      let count = this.teamForm.value.people.length;
+      console.log( this.teamForm.value.people[count-1].person);
+      if (this.teamForm.value.people[count-1].person !== "") {
+        this.onAddNames();
+      }
       this.generateSchedule(this.people);
     });
   }
