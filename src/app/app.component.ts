@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {match} from "./models/match.interface";
 import {game} from "./models/game.interface";
 import {players} from "./models/players.inteface";
+import {FormBuilder, FormGroup, Validators, FormControl, FormArray} from "@angular/forms";
 
 @Component({
   selector: 'app-root',
@@ -9,6 +10,18 @@ import {players} from "./models/players.inteface";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  teamForm: FormGroup;
+
+  constructor(private fb: FormBuilder) {
+    this.teamForm = this.fb.group({
+      people: this.fb.array([])
+    });
+  }
+  onAddNames(newName : String = ''){
+    const control = new FormGroup({'person': new FormControl(newName)});
+    (<FormArray>this.teamForm.get('people')).push(control);
+  }
+
   testPeople: string [] = [
     "Matt",
     "Don",
@@ -28,17 +41,13 @@ export class AppComponent implements OnInit {
       let game : game = { players };
       this.matchUp.games.push(game);
     }
+    this.testPeople.forEach(person => {
+      this.onAddNames(person);
+    });
     this.generateSchedule(this.people);
-  }
-
-  add() {
-    this.people.push("");
-  }
-
-  addBlank(i) {
-    if (this.people.length - 1 === i ) {
-      this.add();
-    }
+    this.teamForm.valueChanges.subscribe(value => {
+      this.generateSchedule(this.people);
+    });
   }
 
   updatePerson($event, i) {

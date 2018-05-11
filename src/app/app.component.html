@@ -4,15 +4,17 @@
     League Scheduler
   </h1>
 </div>
-<table>
-  <thead><th>People</th></thead>
-  <tbody>
-    <tr *ngFor="let peopleName of people; let i = index;">
-      <td><input type="text" value="{{people[i]}}" (keyup)="addBlank(i)" (change)="updatePerson($event, i)" /></td>
-    </tr>
-  </tbody>
-</table>
-<button (click)="add()">Add Person</button>
+<button (click)="onAddNames()">Add people</button>
+<form [formGroup]="teamForm">
+  <table>
+    <ng-container formArrayName="people">
+      <tr *ngFor="let ctrl of teamForm.get('people')['controls']; let i = index" [formGroupName]="i">
+        <td><input type="text" class="form-control" formControlName="person"></td>
+      </tr>
+    </ng-container>
+  </table>
+</form>
+
 <br />
 <br />
 <hr>
@@ -27,4 +29,7 @@
     </tr>
   </tbody>
 </table>
+
+<pre>{{teamForm.value | json}}</pre>
+
 <router-outlet></router-outlet>
