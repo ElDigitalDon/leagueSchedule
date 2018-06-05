@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {match} from "./models/match.interface";
-import {game} from "./models/game.interface";
-import {players} from "./models/players.inteface";
-import {FormBuilder, FormGroup, Validators, FormControl, FormArray} from "@angular/forms";
+import {match} from './models/match.interface';
+import {game} from './models/game.interface';
+import {players} from './models/players.inteface';
+import {FormBuilder, FormGroup, FormControl, FormArray} from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -11,16 +11,6 @@ import {FormBuilder, FormGroup, Validators, FormControl, FormArray} from "@angul
 })
 export class AppComponent implements OnInit {
   teamForm: FormGroup;
-
-  constructor(private fb: FormBuilder) {
-    this.teamForm = this.fb.group({
-      people: this.fb.array([])
-    });
-  }
-  onAddNames(newName : String = ''){
-    const control = new FormGroup({'person': new FormControl(newName)});
-    (<FormArray>this.teamForm.get('people')).push(control);
-  }
 
   testPeople: string [] = [
     'Matt',
@@ -32,14 +22,24 @@ export class AppComponent implements OnInit {
   people: string [] = this.testPeople;
   matchUp: match;
 
+  constructor(private fb: FormBuilder) {
+    this.teamForm = this.fb.group({
+      people: this.fb.array([])
+    });
+  }
+  onAddNames(newName: String = '') {
+    const control = new FormGroup({'person': new FormControl(newName)});
+    (<FormArray>this.teamForm.get('people')).push(control);
+  }
+
   ngOnInit() {
     this.matchUp = {games : []};
     // Pre-configure all the league entries
     for (let i = 0; i < 5; i++ ) {
-      let players : players = {
+      const players: players = {
         player1 : '', player2 : ''
       };
-      let game : game = { players };
+      const game: game = { players };
       this.matchUp.games.push(game);
     }
     // Pre-populate controls from testPeople array
@@ -63,7 +63,7 @@ export class AppComponent implements OnInit {
 
   updatePerson($event, i) {
     console.log($event.target.value);
-    if( $event.target.value.length !== 0) {
+    if ( $event.target.value.length !== 0) {
       this.people[i] = $event.target.value;
     }
     this.generateSchedule(this.people);
@@ -72,11 +72,11 @@ export class AppComponent implements OnInit {
   generateSchedule(people) {
     console.log('attempt to schedule');
     people = people.filter(person => person.length > 0 );
-    if( people.length < 2) {
+    if ( people.length < 2) {
       return;
     }
 
-    let usages = {};
+    const usages = {};
     people.forEach( (person) =>  {
       usages[person] = {timesUsed : 0, pairedWith : []};
     });
@@ -89,16 +89,14 @@ export class AppComponent implements OnInit {
       usages[nextSpouse].timesUsed++;
       usages[game.players.player1].pairedWith.push(game.players.player2);
       usages[game.players.player2].pairedWith.push(game.players.player1);
-      console.dir(usages);
     });
-    console.dir(usages);
   }
 
   findNextLeastUsed( usages, firstSpouse = '' ) {
     let curLeastUsed = -1;
     let curLeastPerson: string;
 
-    for( const person in usages ) {
+    for ( const person in usages ) {
       // Only search first party attributes and non-paired persons
       if ( usages.hasOwnProperty(person)
         && usages[person].pairedWith.includes(firstSpouse) === false
