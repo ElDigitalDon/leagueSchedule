@@ -23,11 +23,11 @@ export class AppComponent implements OnInit {
   }
 
   testPeople: string [] = [
-    "Matt",
-    "Don",
-    "Keith",
-    "Marah",
-    ""
+    'Matt',
+    'Don',
+    'Keith',
+    'Marah',
+    ''
   ];
   people: string [] = this.testPeople;
   matchUp: match;
@@ -37,7 +37,7 @@ export class AppComponent implements OnInit {
     // Pre-configure all the league entries
     for (let i = 0; i < 5; i++ ) {
       let players : players = {
-        player1 : "", player2 : ""
+        player1 : '', player2 : ''
       };
       let game : game = { players };
       this.matchUp.games.push(game);
@@ -49,8 +49,8 @@ export class AppComponent implements OnInit {
     // Subscribe to any changes to the group of controls
     this.generateSchedule(this.people);
     this.teamForm.valueChanges.subscribe(value => {
-      let count = this.teamForm.value.people.length;
-      if (this.teamForm.value.people[count-1].person !== "") {
+      const count = this.teamForm.value.people.length;
+      if (this.teamForm.value.people[count - 1].person !== '') {
         this.onAddNames();
       }
       this.people = [];
@@ -70,7 +70,7 @@ export class AppComponent implements OnInit {
   }
 
   generateSchedule(people) {
-    console.log("attempt to schedule");
+    console.log('attempt to schedule');
     people = people.filter(person => person.length > 0 );
     if( people.length < 2) {
       return;
@@ -94,11 +94,11 @@ export class AppComponent implements OnInit {
     console.dir(usages);
   }
 
-  findNextLeastUsed( usages, firstSpouse = "" ) {
-    let curLeastUsed : number = -1;
-    let curLeastPerson : string;
+  findNextLeastUsed( usages, firstSpouse = '' ) {
+    let curLeastUsed = -1;
+    let curLeastPerson: string;
 
-    for( let person in usages ) {
+    for( const person in usages ) {
       // Only search first party attributes and non-paired persons
       if ( usages.hasOwnProperty(person)
         && usages[person].pairedWith.includes(firstSpouse) === false
