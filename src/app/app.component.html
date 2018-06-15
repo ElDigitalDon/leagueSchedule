@@ -14,15 +14,11 @@
   </mat-card-header>
   <mat-card-content>
     <form [formGroup]="teamForm">
-      <table>
-        <ng-container formArrayName="people">
-          <tr *ngFor="let ctrl of teamForm.get('people')['controls']; let i = index" [formGroupName]="i">
-            <td>
-              <input type="text" class="form-control" formControlName="person">
-            </td>
-          </tr>
-        </ng-container>
-      </table>
+      <ng-container formArrayName="people">
+        <mat-form-field *ngFor="let ctrl of teamForm.get('people')['controls']; let i = index" [formGroupName]="i">
+          <input matInput placeholder="Person" formControlName="person">
+        </mat-form-field>
+      </ng-container>
     </form>
   </mat-card-content>
 </mat-card>
