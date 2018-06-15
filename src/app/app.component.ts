@@ -3,7 +3,6 @@ import {match} from './models/match.interface';
 import {game} from './models/game.interface';
 import {players} from './models/players.inteface';
 import {FormBuilder, FormGroup, FormControl, FormArray} from '@angular/forms';
-import {tryCatch} from 'rxjs/internal-compatibility';
 
 @Component({
   selector: 'app-root',
