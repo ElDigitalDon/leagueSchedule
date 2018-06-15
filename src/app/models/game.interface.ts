@@ -1,5 +1,5 @@
-import {players} from "./players.inteface";
+import {players} from './players.inteface';
 
 export interface game {
-  players : players
+  players: players;
 }
