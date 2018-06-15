@@ -28,6 +28,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## Deployment
 Run `ng build --prod` to build for production release
+
 Run `firebase deploy --only hosting` to push changes up to Firebase
 
 
