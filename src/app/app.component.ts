@@ -37,7 +37,7 @@ export class AppComponent implements OnInit {
     // Pre-configure all the league entries
     for (let i = 0; i < 5; i++ ) {
       const players: players = {
-        player1 : '', player2 : ''
+        player1 : '', player2 : '', duplicate : false
       };
       const game: game = { players };
       this.matchUp.games.push(game);
@@ -71,22 +71,32 @@ export class AppComponent implements OnInit {
 
   generateSchedule(people) {
     console.log('attempt to schedule');
+
+    // Filter out the empty entries
     people = people.filter(person => person.length > 0 );
     if ( people.length < 2) {
       return;
     }
 
+    // Fill out the timesUsed and pairedWith attributes for each person
     const usages = {};
     people.forEach( (person) =>  {
       usages[person] = {timesUsed : 0, pairedWith : []};
     });
+
+    // Let's get it done.
     this.matchUp.games.forEach( (game) => {
+      // Get the left hand side of the game
       let nextSpouse = this.findNextLeastUsed( usages );
       game.players.player1 = nextSpouse;
       usages[nextSpouse].timesUsed++;
+
+      // Get the right hand side of the game
       nextSpouse = this.findNextLeastUsed( usages, nextSpouse );
       game.players.player2 = nextSpouse;
       usages[nextSpouse].timesUsed++;
+
+      // Update the usages matrix
       usages[game.players.player1].pairedWith.push(game.players.player2);
       usages[game.players.player2].pairedWith.push(game.players.player1);
     });
@@ -96,10 +106,13 @@ export class AppComponent implements OnInit {
     let curLeastUsed = -1;
     let curLeastPerson: string;
 
+    // Walk through persons looking for non-matches
     for ( const person in usages ) {
-      // Only search first party attributes and non-paired persons
-      if ( usages.hasOwnProperty(person)
-        && usages[person].pairedWith.includes(firstSpouse) === false
+      // Skip missing first party attributes
+      if ( ! usages.hasOwnProperty(person) ) { continue; }
+
+      // non-paired persons
+      if ( usages[person].pairedWith.includes(firstSpouse) === false
         && person !== firstSpouse) {
         // Found a person that hasn't been used?  Leave.  Now.
         if ( usages[person].timesUsed === 0 ) {

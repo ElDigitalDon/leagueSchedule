@@ -25,7 +25,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let game of matchUp.games; let i = index;">
-      <td>{{i + 1}}</td><td>{{game.players.player1}}</td><td>{{game.players.player2}}</td>
+      <td>{{i + 1}}</td><td [ngStyle]="game.players.duplicate == true ? 'color:yellow' : ''">{{game.players.player1}}</td><td>{{game.players.player2}}</td>
     </tr>
   </tbody>
 </table>
