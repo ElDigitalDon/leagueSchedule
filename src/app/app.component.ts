@@ -3,6 +3,7 @@ import {match} from './models/match.interface';
 import {game} from './models/game.interface';
 import {players} from './models/players.inteface';
 import {FormBuilder, FormGroup, FormControl, FormArray} from '@angular/forms';
+import {tryCatch} from 'rxjs/internal-compatibility';
 
 @Component({
   selector: 'app-root',
@@ -84,22 +85,33 @@ export class AppComponent implements OnInit {
       usages[person] = {timesUsed : 0, pairedWith : []};
     });
 
-    // Let's get it done.
-    this.matchUp.games.forEach( (game) => {
-      // Get the left hand side of the game
-      let nextSpouse = this.findNextLeastUsed( usages );
-      game.players.player1 = nextSpouse;
-      usages[nextSpouse].timesUsed++;
+    // Now try to schedule
+    try {
+      // Let's get it done.
+      this.matchUp.games.forEach( (game) => {
+        // Get the left hand side of the game
+        let nextSpouse = this.findNextLeastUsed( usages );
+        game.players.player1 = nextSpouse;
+        usages[nextSpouse].timesUsed++;
 
-      // Get the right hand side of the game
-      nextSpouse = this.findNextLeastUsed( usages, nextSpouse );
-      game.players.player2 = nextSpouse;
-      usages[nextSpouse].timesUsed++;
+        // Get the right hand side of the game
+        nextSpouse = this.findNextLeastUsed( usages, nextSpouse );
+        game.players.player2 = nextSpouse;
+        usages[nextSpouse].timesUsed++;
 
-      // Update the usages matrix
-      usages[game.players.player1].pairedWith.push(game.players.player2);
-      usages[game.players.player2].pairedWith.push(game.players.player1);
-    });
+        // Update the usages matrix
+        usages[game.players.player1].pairedWith.push(game.players.player2);
+        usages[game.players.player2].pairedWith.push(game.players.player1);
+      });
+    } catch (e) {
+      console.log(e);
+      // Clear out the schedule before starting a new schedule
+      this.matchUp.games.forEach( (game) => {
+        game.players.player1 = '';
+        game.players.player2 = '';
+      });
+    }
+
   }
 
   findNextLeastUsed( usages, firstSpouse = '' ) {
