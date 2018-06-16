@@ -1,8 +1,10 @@
+import { environment } from './../environments/environment';
 import { Component, OnInit } from '@angular/core';
 import {match} from './models/match.interface';
 import {game} from './models/game.interface';
 import {players} from './models/players.inteface';
 import {FormBuilder, FormGroup, FormControl, FormArray} from '@angular/forms';
+
 
 @Component({
   selector: 'app-root',
@@ -11,6 +13,7 @@ import {FormBuilder, FormGroup, FormControl, FormArray} from '@angular/forms';
 })
 export class AppComponent implements OnInit {
   teamForm: FormGroup;
+  displayedColumns = ['player1', 'player2'];
 
   testPeople: string [] = [
     'Matt',
@@ -21,6 +24,8 @@ export class AppComponent implements OnInit {
   ];
   people: string [] = this.testPeople;
   matchUp: match;
+  dataSource: any = {};
+  prod: boolean = environment.production;
 
   constructor(private fb: FormBuilder) {
     this.teamForm = this.fb.group({
@@ -101,6 +106,13 @@ export class AppComponent implements OnInit {
         // Update the usages matrix
         usages[game.players.player1].pairedWith.push(game.players.player2);
         usages[game.players.player2].pairedWith.push(game.players.player1);
+
+        this.dataSource = this.matchUp.games.map(players => {
+          return {
+            player1: players.players['player1'],
+            player2: players.players['player2']
+          }
+        });
       });
     } catch (e) {
       console.log(e);

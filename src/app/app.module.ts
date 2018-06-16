@@ -9,6 +9,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import { MaterialAllModule } from './shared/material/material.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
     BrowserAnimationsModule,
     NoopAnimationsModule,
     MaterialAllModule,
+    FlexLayoutModule,
     AppRoutingModule
   ],
   providers: [],
