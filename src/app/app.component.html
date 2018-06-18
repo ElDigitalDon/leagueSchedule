@@ -1,43 +1,65 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" class="mat-elevation-z4">
   <h1>
     League Scheduler
   </h1>
 </mat-toolbar>
 
-<mat-card>
-  <mat-card-header>
-    <div mat-card-avatar>
-      <mat-icon>group</mat-icon>
-    </div>
-    <mat-card-title>Manage People</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <form [formGroup]="teamForm">
-      <ng-container formArrayName="people">
-        <mat-form-field *ngFor="let ctrl of teamForm.get('people')['controls']; let i = index" [formGroupName]="i">
-          <input matInput placeholder="Person" formControlName="person">
-        </mat-form-field>
-      </ng-container>
-    </form>
-  </mat-card-content>
-</mat-card>
+<div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+  <mat-card fxFlex="50%">
+    <mat-card-header>
+      <div mat-card-avatar>
+        <mat-icon>group</mat-icon>
+      </div>
+      <mat-card-title>Manage People</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="teamForm">
+        <ng-container formArrayName="people">
+          <mat-form-field *ngFor="let ctrl of teamForm.get('people')['controls']; let i = index" [formGroupName]="i">
+            <input matInput placeholder="Person" formControlName="person">
+          </mat-form-field>
+        </ng-container>
+      </form>
+    </mat-card-content>
+  </mat-card>
 
-<mat-card>
-  <mat-card-content>
-      <table  class="schedule">
-          <thead><tr>
-            <td>Game #</td><td>Player1</td><td>Player2</td></tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let game of matchUp.games; let i = index;">
-              <td>{{i + 1}}</td><td [ngStyle]="game.players.duplicate == true ? 'color:yellow' : ''">{{game.players.player1}}</td><td>{{game.players.player2}}</td>
-            </tr>
-          </tbody>
-        </table>
-  </mat-card-content>
-</mat-card>
+  <mat-card fxFlex="50%">
+    <mat-card-content>
 
-<pre>{{teamForm.value | json}}</pre>
+      <table mat-table [dataSource]="dataSource" *ngIf="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="player1">
+          <th mat-header-cell *matHeaderCellDef> Player 1 </th>
+          <td mat-cell *matCellDef="let element"> {{element.player1}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="player2">
+          <th mat-header-cell *matHeaderCellDef> Player 2 </th>
+          <td mat-cell *matCellDef="let element"> {{element.player2}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <!-- <table class="schedule">
+        <thead>
+          <tr>
+            <td>Game #</td>
+            <td>Player1</td>
+            <td>Player2</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let game of matchUp.games; let i = index;">
+            <td>{{i + 1}}</td>
+            <td [ngStyle]="game.players.duplicate == true ? 'color:yellow' : ''">{{game.players.player1}}</td>
+            <td>{{game.players.player2}}</td>
+          </tr>
+        </tbody>
+      </table> -->
+    </mat-card-content>
+  </mat-card>
+</div>
+<pre *ngIf="!prod">{{teamForm.value | json}}</pre>
 
 <router-outlet></router-outlet>
