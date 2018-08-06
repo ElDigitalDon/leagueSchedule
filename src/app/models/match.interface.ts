@@ -1,6 +1,6 @@
-import {game} from './game.interface';
+import {Game} from './game.interface';
 
-export interface match {
-  games: game[];
+export interface Match {
+  games: Game[];
 
 }

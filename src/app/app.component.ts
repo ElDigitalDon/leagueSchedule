@@ -1,8 +1,8 @@
 import { environment } from './../environments/environment';
 import { Component, OnInit } from '@angular/core';
-import {match} from './models/match.interface';
-import {game} from './models/game.interface';
-import {players} from './models/players.inteface';
+import {Match} from './models/match.interface';
+import {Game} from './models/game.interface';
+import {Players} from './models/players.inteface';
 import {FormBuilder, FormGroup, FormControl, FormArray} from '@angular/forms';
 
 
@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
     ''
   ];
   people: string [] = this.testPeople;
-  matchUp: match;
+  matchUp: Match;
   dataSource: any = {};
   prod: boolean = environment.production;
 
@@ -41,10 +41,10 @@ export class AppComponent implements OnInit {
     this.matchUp = {games : []};
     // Pre-configure all the league entries
     for (let i = 0; i < 5; i++ ) {
-      const players: players = {
+      const players: Players = {
         player1 : '', player2 : '', duplicate : false
       };
-      const game: game = { players };
+      const game: Game = { players };
       this.matchUp.games.push(game);
     }
     // Pre-populate controls from testPeople array
@@ -111,7 +111,7 @@ export class AppComponent implements OnInit {
           return {
             player1: players.players['player1'],
             player2: players.players['player2']
-          }
+          };
         });
       });
     } catch (e) {
